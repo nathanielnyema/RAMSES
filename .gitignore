@@ -1,0 +1,48 @@
+# Mac OS
+.DS_Store
+
+# Cache files
+*~
+*.swp
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Passwords
+matlab/**/ieeg_login
+matlab/**/pwdfile.bin
+
+# Data files
+*.hdf5
+matlab/Features/*
+matlab/Models/*
+matlab/model_final.mat
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VScode
+.vscode/
+
+# redis
+*.rdb
+
+# celery
+celerybeat-schedule
+*.pid
+*.db
+
+# node
+.node-modules/

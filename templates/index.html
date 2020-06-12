@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="shortcut icon" href="/static/favicon.png">
+        <title>ICU EEG Monitoring Dashboard</title>
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,800" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+        <style>
+            #list {
+                overflow-y: scroll;
+            }
+        </style>
+        <script>
+            var list=JSON.parse('{{list|safe}}');
+            var list2=JSON.parse('{{list2|safe}}');
+            var sznums=JSON.parse('{{sznums|safe}}');
+            var sztimes=JSON.parse('{{sztimes|safe}}');
+            var worst=JSON.parse('{{worst|safe}}');
+            var orders=JSON.parse('{{orders|safe}}');
+            var pct=JSON.parse('{{pct|safe}}');
+            var filled=false;
+
+
+
+            function fillList() {
+                var order=$("#sorting-select")[0].value;
+                var win=$("#window-select")[0].value;
+
+                if(filled){
+                    $('#list').empty();
+                }
+                console.log(list);
+                var states=['safe','maybe','sz','artifact'];
+                orders[win][order].forEach((e,i)=>{
+                    $('#list').append(`<div class="grid-item">`+
+                    `<a href="/dashboard?name=${list[e]}" style="font-family: 'Open Sans', sans-serif; text-decoration:none; font-weight:800;">${list[e]} | ${list2[e]}</a>`+
+                    `<p>${sznums[win][e]} seizures    |    ${sztimes[win][e]} minutes ago   |  ${pct[win][e]}% concerning </p>`+ 
+                    `<div class="status ${states[worst[win][e]]}"></div></div>`);
+                });
+                filled=true;
+            }
+
+        </script>
+    </head>
+    <body onload="fillList(null)">
+        <div id="shadow" class="shadow"></div>
+        <div id="toggle-btn" class="toggle-btn" onClick="openMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <script>
+            function openMenu(){
+                console.log('a');
+                $("#menu")[0].classList.toggle('active');
+                $("#shadow")[0].classList.toggle('casting');
+            }
+        </script>
+        <div id="logo">
+            <img id="logo1" src="../static/RAMSES.png" alt="RAMSES Logo">
+            <img id="logo2" src="../static/RAMSES2.png" alt="RAMSES Logo" style="z-index: 5; opacity: 0;">
+        </div>
+        <div id="sorting">
+            <p>Sort By: 
+            <select id="sorting-select" style="width: 65%;" onchange="fillList()">
+                <option value="recent"> Recent </option>
+                <option value="density"> Density </option>
+                <option value="room"> Room </option>
+            </select>
+        </br>
+            </p>
+            <p>Window Size: 
+                <select id="window-select" style="width: 65%;" onchange="fillList()">
+                    <option value="h2"> 2 hours </option>
+                    <option value="h4"> 4 hours </option>
+                    <option value="h8"> 8 hours </option>
+                    <option value="h12"> 12 hours </option>
+                    <option value="h24"> 24 hours </option>
+                </select>
+                </p>
+        </div> 
+        <div id="menu" class="menu">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/static/contact.html">CONTACT</a></li>
+                <li><a href="/static/about.html">ABOUT</a></li>
+                <li><a href="/static/options.html">OPTIONS</a></li>
+            </ul>
+        </div>
+        <div id="list" class="grid-container">
+        </div>
+    </body>
+</html>

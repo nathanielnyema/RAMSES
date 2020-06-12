@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <title>About</title>
+</head>
+
+<body>
+    <div id="shadow" class="shadow"></div>
+        <div id="toggle-btn" class="toggle-btn" onClick="openMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <script>
+            function openMenu(){
+                console.log('a');
+                $("#menu")[0].classList.toggle('active');
+                $("#shadow")[0].classList.toggle('casting');
+            }
+        </script>
+        <div id="logo">
+            <img id="logo1" src="/static/RAMSES.png" alt="RAMSES Logo">
+            <img id="logo2" src="/static/RAMSES2.png" alt="RAMSES Logo" style="z-index: 5; opacity: 0;">
+        </div>
+        <div id="menu" class="menu">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/static/contact.html">CONTACT</a></li>
+                <li><a href="/static/about.html">ABOUT</a></li>
+                <li><a href="/static/options.html">OPTIONS</a></li>
+            </ul>
+        </div>
+        <div style="position: absolute; left: 20%; top: 20%; width: 60%; margin: auto; text-align: left;">
+            <h2>Dashboard Configuration Options</h2>
+            <h3>Add a patient</h3>
+            <form action="/add-patient" method="POST">
+                <p>Patient Name <input type = "text" name="name"/></p>
+                <p>Bed ID <input type = "text" name="bed"/></p>
+                <p><input type = "submit" value = "submit" /></p>
+            </form>
+            <!-- if its possible i should have some kind of on submit function that makes sure the us wants to do something -->
+            <h3>Deactivate a bed</h3>
+            <form action="/deactivate-bed" method="POST">
+                <p>Bed ID <input type = "text" name="bed"/></p>
+                <p><input type = "submit" value = "submit" /></p>
+            </form>
+        </div>
+</body>
+</html>

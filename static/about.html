@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/static/favicon.png">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <title>About</title>
+</head>
+
+<body>
+    <div id="shadow" class="shadow"></div>
+        <div id="toggle-btn" class="toggle-btn" onClick="openMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <script>
+            function openMenu(){
+                console.log('a');
+                $("#menu")[0].classList.toggle('active');
+                $("#shadow")[0].classList.toggle('casting');
+            }
+        </script>
+        <a href="/">
+            <div id="logo">
+                <img id="logo1" src="../static/RAMSES.png" alt="RAMSES Logo">
+                <img id="logo2" src="../static/RAMSES2.png" alt="RAMSES Logo" style="z-index: 5; opacity: 0;">
+            </div>
+        </a>
+        <div id="menu" class="menu">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/static/contact.html">CONTACT</a></li>
+                <li><a href="/static/about.html">ABOUT</a></li>
+                <li><a href="/static/options.html">OPTIONS</a></li>
+            </ul>
+        </div>
+        <div style="position: absolute; left: 20%; top: 20%; width: 60%; margin: auto; text-align: left;">
+            <h2>About this ICU EEG Dashboard</h2>
+
+            <div>
+                <p>The vision for this dashboard is simple: to aid physicians in promptly digesting & triaging EEG results from patients currently bedded in the HUP. A patient's data can be selected to be viewed from the home page, where each patient is delineated by bed number: RID00<code>BED_NUMBER</code></p>
+                <p>The dashboard streams patient data from iEEG, outputting a prediction for each 10-second time window on the likelihood that a seizure occurred during that period.</p>
+                <p>The color coding goes as follows:
+                    <li>Blue => Likely healthy period</li><br />
+                    <li>Yellow => Potential seizure</li><br />
+                    <li>Red => Likely seizure</li><br />
+                </p>
+        
+                
+            </div>
+        </div>
+</body>
+</html>
