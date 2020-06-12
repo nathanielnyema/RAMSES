@@ -1,4 +1,4 @@
-# icu-eeg
+# RAMSES
 RAMSES is a real-time alerting and monitoring system for epiliptic seizures. The system is intended to be deployed on a server behind a given hospital’s firewall, where it will intermittently pull EEG data from the hospital network as it is recorded from Natus machines, run an algorithm on the backend to classify the likelihood of seizure activity, and update a web dashboard accordingly. As the system will be deployed behind the hospital firewall, only individuals with designated access who are logged into the hospital system can view the web pages. 
 
 ## Software requirements
@@ -25,3 +25,6 @@ python3 -m pip install -r requirements.txt
 
 ## Running the app
 1. To start the app run the command `bash start_app.sh <path to your mongo installation directory>/bin`. For more information on the mongo installation directory and the need for this argument see the MongoDB [documentation](https://docs.mongodb.com/manual/mongo/).
+
+## Contact
+Reach out to [Nathaniel Nyema](mailto:nyema@seas.upenn.edu), [Ola Owoputi](mailto:owo@seas.upenn.edu), [Elom Dumenyo](mailto:edumenyo@seas.upenn.edu), or [Shyon Small](mailto:shyons@seas.upenn.edu).
