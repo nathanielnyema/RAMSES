@@ -1,4 +1,10 @@
-%% Run all experiments
+%% This script trains and evaluates the random forest model for seizure detection/data reduction in RAMSES.
+% BEFORE RUNNING THIS SCRIPT:
+%   1) fill in your IEEG portal username and password file in the "Set up workspace" section.
+%   2) (optional) set test_ML and analyze_results to true in order to evaluate the model.
+%   3) (optional) generate figures by setting make_figures and/or visualize to true.
+% AFTER RUNNING THIS SCRIPT:
+%   copy the trained model from "matlab/Models/model_struct_3_sec.mat" to "matlab/model_final.mat"
 
 % ICU EEG project
 % created by John Bernabei
@@ -9,17 +15,16 @@ clear % Clear all data structures
 oldpath = addpath('Utils', 'Data');
 
 % Whether to run each portion
-run_features = false; % Set to 1 to calculate & save features
-train_ML = false; % Set to 1 to train classifiers
-test_ML = false; % Set to 1 to test classifiers
-run_adaptive = false; % Set to 1 to run adaptive learning
-analyze_results = true; % Set to 1 to analyze results
-make_figures = true; % Set to 1 to make figures
-visualize = true; % Create data visualization figure
-save_results = false; % Set to 1 to save results
+run_features = true; % Calculate & save features
+train_ML = true; % Train classifiers
+test_ML = false; % Test classifiers
+% run_adaptive = false; % Not implemented
+analyze_results = false; % Analyze results
+make_figures = false; % Make figures
+visualize = false; % Visualization figure
 
-iEEGid = 'owo'; % Change this for different user
-iEEGpw = 'pwdfile.bin'; % Change this for different user
+iEEGid = 'MY_IEEG_USERNAME';
+iEEGpw = 'MY_IEEG_PASSWORD_FILE.bin';
 
 % Set up patients
 all_pt_info = readtable('patient_table.csv');
@@ -33,7 +38,7 @@ pt_type_list = all_pt_info{:,3}; % 1 = discrete sz, 2 = sz free, 3 = IIC
 %% Set up important variables 
 
 % Set window length
-win_len = 10; % seconds
+win_len = 5; % seconds
 
 % Set up artifact rejection thresholds
 % mean, variance, delta, theta, alpha, beta, LL, enveope, kurtosis, entropy
@@ -142,9 +147,6 @@ end
 %     
 %     save('Results/semi_adaptive_struct_rf_3.mat','semi_adaptive_struct')
 % end
-
-%% Run null model
-
 
 %% Analyze machine learning
 if analyze_results
@@ -354,7 +356,6 @@ end
 sz_pts_bad_redux = find(TN(:,10) < 0.8)
 nsz_pts_bad_redux = find(TN_free(:,10) < 0.8)
 sz_pts_bad_recall = find(AdvRecall(:,10) < 0.8)
-%% Save results
 
 %% Cleanup
-% path(oldpath);
+path(oldpath);
