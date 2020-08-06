@@ -26,5 +26,8 @@ python3 -m pip install -r requirements.txt
 ## Running the app
 1. To start the app run the command `bash start_app.sh <path to your mongo installation directory>/bin`. For more information on the mongo installation directory and the need for this argument see the MongoDB [documentation](https://docs.mongodb.com/manual/mongo/).
 
+## Notes on using the interface
+Once everything is set up you can access the dashboard from your browser of choice by navigating to port 5000 on your localhost. The home page will be blank at first, though, because the database is reset before the first request to the flask app. In the process, all beds are set to inactive (i.e. all beds are empty). To start mock streaming you'll need to manually add a patient to a bed. To do this, open the menu in the top left corner and navigate to the options page. Here you can enter any arbitrary patient name and a number from 1-16 as the bed id. For demo purposes these bed ids map to the dataset names on ieeg (1-16 maps to RID0060 to RID0075). When you see that you've successfully added a patient you can then navigate back to the home page. The patient still won't appear for some time until a non-artifact prediction has been made by the classifier (note predictions are made every 10 seconds).
+
 ## Contact
 Reach out to [Nathaniel Nyema](mailto:nyema@seas.upenn.edu), [Ola Owoputi](mailto:owo@seas.upenn.edu), [Elom Dumenyo](mailto:edumenyo@seas.upenn.edu), or [Shyon Small](mailto:shyons@seas.upenn.edu).

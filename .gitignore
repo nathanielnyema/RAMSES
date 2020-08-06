@@ -44,5 +44,9 @@ celerybeat-schedule
 *.pid
 *.db
 
+# ieeg
+ieegpy/
+
+
 # node
 .node-modules/

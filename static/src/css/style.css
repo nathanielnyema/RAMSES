@@ -1,0 +1,375 @@
+/* GENERAL */
+/* logo stuff */
+#logo-wrapper {
+  width: 8%; 
+  position: absolute;
+  left: 5%; 
+  top: 2.5%;
+}
+
+#logo-sorting {
+  width: 100%; 
+  position: relative;
+  left: 0%; 
+  top: 0%;
+}
+#logo img{
+  height: auto;
+  width: 100%;
+  vertical-align: text-top;
+  z-index: 4;
+  top: 0px;
+  left: 0px;
+  transition: opacity 1s;
+}
+.rel{
+  position: relative;
+}
+.abs{
+  position: absolute;
+}
+
+/* menu */
+.toggle-btn-wrapper{
+  z-index: 4;
+  position: fixed;
+  top:2%;
+  left:2%;
+  width: 2%;
+}
+.toggle-btn {
+  z-index: inherit;
+  position: absolute;
+  top:0%;
+  left:0%;
+  width: 100%;
+  padding-bottom: 100%; 
+}
+
+.toggle-btn span {
+  display: block;
+  padding: 10%;
+  background: #545454;
+  margin: 10% 0px;
+  border-radius:10%;
+  transition: background 1s;
+}
+
+.menu {
+  position: fixed;
+  z-index: 3;
+  top: 0px;
+  width: 300px;
+  height: 100%;
+  left: -300px; 
+  transition: all 500ms linear;
+  background-color: #dadada;
+}
+
+.active {
+  left: 0px;
+  box-shadow: 15px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.menu ul{
+  position: absolute;
+  top: 170px;
+  left: 90px;
+}
+
+.menu ul li{
+  top: 50px;
+  list-style: none;
+}
+
+li a {
+  display: block;
+  color: rgb(255, 255, 255);
+  padding: 20px 20px;
+  text-decoration: none;
+  align: right;
+}
+
+/* INDEX SPECIFIC */
+/* sorting options which go inside the logo wrapper */
+#sorting {
+  position: relative;
+}
+
+#sorting span {
+  display: block;
+  font-size: 10%;
+}
+#sorting span select{
+  width: 100%;
+  display: block;
+  font-size: 10%;
+}
+/* grid of name tags */
+.grid-container {
+  position: absolute;
+  width: 75%;
+  height: 95%;
+  margin-left: 20%;
+  display: grid;
+  grid-template-columns: 49% 49%;
+  grid-gap: 2%;
+  padding: 0.5%;
+}
+.grid-item {
+  border-radius: 5px;
+  position: relative;
+  background-color: white;
+  border: 6px solid #dadada;
+  padding: 1%;
+  box-sizing: border-box;
+  text-align: left;
+}
+.blank-item {
+  border-radius: 5px;
+  position: relative;
+  background-color: white;
+  border: 6px solid white;
+  padding: 1%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.status{
+  border-radius:50%;
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  height: 40px;
+  min-height: 40px;
+  width: 40px;
+}
+
+.safe{
+  background-color: #0ec6e5;
+}
+.maybe{
+  background-color: #ffde59;
+}
+.sz{
+  background-color: #ff5757;
+}
+.artifact{
+  background-color: #000000;
+}
+
+/* PATIENT VIEW */
+/* name tag */
+#name-tag {
+  text-align: right; 
+  position: absolute; 
+  right: 2%; 
+  top: 2%;
+  height: 15%;
+  width: 15%;
+  font-family: 'Open Sans', sans-serif; 
+  font-weight: 800;
+}
+#name-tag p {
+  padding: 0px; 
+  margin: 0px; 
+  color: #545454;
+  white-space:nowrap;
+}
+/* raw data view */
+#whole-display-container{
+  display: flex; 
+  flex-flow: column; 
+  height: 100%; 
+  width: 100%;
+}
+#viewer-opt-container {
+  top: 5%;
+  left: 50%;
+  position: relative;
+  margin-left: -30%;
+  border: 3px solid #545454;
+  width: 60%;
+  text-align: center;
+  padding-bottom: 28%;
+  transition: border 1s;
+}
+#viewer-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#sliders{  
+  position: absolute;
+  width: 40%;
+  margin-left: 105%;
+  top: 70%;
+  height:10%;
+  text-align: left;
+  visibility: hidden;
+}
+
+
+/* prediction plot */
+#chart-btn-nav-container{
+  width: 100%;
+  padding-top: 13%;
+  position: relative;
+  top: 10%;
+}
+#chart-btn-container{
+  position: absolute;
+  height:65%; 
+  top: 0px; 
+  left: 0px; 
+  width:100%;  
+  overflow-x: scroll;
+}
+#left{
+  position: absolute; 
+  left: 0px; 
+  top:14%;  
+  height: 72%; 
+  width: 10%; 
+  background: #545454; 
+  text-align: center; 
+  color: white; 
+  font-size: 200%;
+}
+#right{
+  position: absolute; 
+  top: 14%; 
+  right: 0%; 
+  height: 72%; 
+  width: 10%; 
+  background: #545454; 
+  text-align: center; 
+  color: white; 
+  font-size: 200%;
+}
+#chart-container{
+  position: absolute;
+  width: 80%; 
+  height: 100%;
+  top: 0px; 
+  left: 10%;  
+  overflow-x: scroll;
+}
+#chart-wrapper{
+  height: 100%;
+  width: 100%;
+}
+#nav-wrapper{
+  position: absolute;
+  bottom: 0px;
+  height:35%; 
+  width:100%;
+}
+
+#chartOptions{
+  position: relative;
+  left: 50px;
+  height: 5%;
+  width: 100%;
+  top: 8%;
+  text-align: center;
+}
+#chartOptions span{
+  display: inline-block;
+  height: 100%;
+}
+
+
+i {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.column{
+    float: left;
+    width: 50%;
+    color: white;
+}
+.row:after{
+    content: "";
+    display: table;
+    clear: both;
+
+}
+
+
+
+#pred-selector{
+  position: absolute;
+  box-sizing:border-box;
+  z-index: 1;
+  display: none;
+  top: 10%;
+  height: 80%;
+  opacity: 0.7;
+  pointer-events: none;
+
+}
+
+.footer {
+  position: relative;
+  top: 10%;
+  height: 60%;
+  width: 100%;
+  bottom: 0%;
+  text-align: middle;
+  background-color:#545454;
+  flex-grow: 1;
+}
+
+
+
+.previous {
+    background-color: #f1f1f1;
+    color: black;
+    font-size: 35px;
+    height: 40px;
+    width: 60px;
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    border-radius: 50%;
+    text-decoration: none;
+}
+  
+.next {
+    background-color: rgb(60, 65, 60);
+    color: white;
+    font-size: 35px;
+    height: 40px;
+    width: 60px;
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  margin: auto;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -8,6 +8,7 @@ class SeizurePrediction(EmbeddedMongoModel):
     confidence = fields.FloatField()
 
 class Patient(EmbeddedMongoModel):
+    pid=fields.CharField()
     name=fields.CharField()
     predictions = fields.EmbeddedDocumentListField(SeizurePrediction, default=[])
     lastread=fields.DateTimeField()

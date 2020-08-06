@@ -16,7 +16,6 @@ import celery
 from patient import Bed, Patient, SeizurePrediction
 import setup_db
 from time import sleep
-from nrt.nrt_wrapper import *
 
 def to_usec(seconds):
     return int(seconds * 1e6)

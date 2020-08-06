@@ -15,5 +15,5 @@ export PATH=$PATH:$1
 
 (celery worker -A dashboard.celery --loglevel=info --pool=solo&)
 
-.venv/Scripts/python dashboard.py
+python3 dashboard.py
 

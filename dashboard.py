@@ -7,7 +7,7 @@ import os
 from celery import Celery
 import celeryconfig
 from flask import Flask, render_template, make_response, request, url_for, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask_assets import Environment, Bundle
 import ieeg
 from ieeg.auth import Session
 import numpy as np
@@ -48,6 +48,32 @@ def make_celery(app):
     return celery
 
 celery = make_celery(app)
+#bundle static files
+assets=Environment(app)
+
+js_reqs_bundle=Bundle(
+    'src/js/chartjs-plugin-downsample.js',
+    'src/js/jquery.fittext.js',
+    filters='jsmin',
+    output='dist/js/reqs.min.js')
+
+js_main=Bundle(
+    'src/js/display.js',
+    filters='jsmin',
+    output='dist/js/main.min.js')
+
+css_bundle=Bundle(
+    'src/css/style.css',
+    filters='cssutils',
+    output='dist/css/style.min.css')
+
+assets.register('main_css', css_bundle)
+assets.register('reqs_js', js_reqs_bundle)
+assets.register('main_js', js_main)
+
+css_bundle.build()
+js_reqs_bundle.build()
+js_main.build()
 
 def to_usec(seconds):
     return int(seconds * 1e6)
@@ -104,6 +130,8 @@ def home():
     sznums={win:[] for win in windows}
     worst={win:[] for win in windows}
     pct={win:[] for win in windows}
+    preds={win:[] for win in windows}
+    times={win:[] for win in windows}
     orders={}
 
     active=[]
@@ -126,7 +154,7 @@ def home():
                     now=datetime.now()
                     hours=int(win[1:len(win)])
                     wind_start=now-timedelta(hours=hours)
-                    ts = [wind_start] + [x.time for x in predictions if x.time>wind_start]
+                    ts = [max(wind_start,pt.start)] + [x.time for x in predictions if x.time>wind_start]
                     ps = [x.prediction for x in predictions if x.time>wind_start]
 
                     sztimes_tmp, sznums_tmp, worst_tmp, pct_tmp=get_stats(ps,ts)
@@ -134,6 +162,10 @@ def home():
                     sznums[win].append(sznums_tmp)
                     worst[win].append(worst_tmp)
                     pct[win].append(pct_tmp)
+                    preds[win].append(ps)
+                    times[win].append([t.strftime('%Y-%m-%d %H:%M:%S.%f') for t in ts])
+ 
+
 
     for win in windows:
         # for each window size we have a different set of orderings       
@@ -154,6 +186,8 @@ def home():
         worst=json.dumps(worst),
         orders=json.dumps(orders),
         pct=json.dumps(pct),
+        preds=json.dumps(preds),
+        times=json.dumps(times),
         )
 
 @app.route('/dashboard')
@@ -205,7 +239,7 @@ def dashboard():
     times_list= [datetime.strftime(t,'%Y-%m-%d %H:%M:%S.%f') for t in times_list]
     print(times_list)
     return render_template(
-        'ProofOfConcept.html',
+        'patient_view.html',
         prevp=prevb,
         nextp=nextb,
         Patient=patient_db.name,
@@ -265,7 +299,7 @@ def add():
     Add a patient to a bed based on user input
     """
     try:
-        bed_id='RID00'+str(int(request.form['bed']))
+        bed_id='RID00'+str(int(request.form['bed'])+59)
         setup_db.add_patient(bed_id,request.form['name'])
         return render_template('success.html')
     except (setup_db.InvalidBed,ValueError):
@@ -284,6 +318,17 @@ def deactivate():
     except (setup_db.InvalidBed,ValueError):
         return render_template('failed.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/options')
+def options():
+    return render_template('options.html')
 
 @app.before_first_request
 def reset_db():

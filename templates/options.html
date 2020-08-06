@@ -2,35 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    {% assets "main_css" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+    {% endassets %}
+    <link rel="shortcut icon" href="/static/favicon.png">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <title>About</title>
 </head>
 
 <body>
     <div id="shadow" class="shadow"></div>
+    `<div class="toggle-btn-wrapper">
         <div id="toggle-btn" class="toggle-btn" onClick="openMenu()">
             <span></span>
             <span></span>
             <span></span>
         </div>
+    </div>
         <script>
             function openMenu(){
-                console.log('a');
                 $("#menu")[0].classList.toggle('active');
-                $("#shadow")[0].classList.toggle('casting');
             }
         </script>
-        <div id="logo">
-            <img id="logo1" src="/static/RAMSES.png" alt="RAMSES Logo">
-            <img id="logo2" src="/static/RAMSES2.png" alt="RAMSES Logo" style="z-index: 5; opacity: 0;">
-        </div>
+        <div id="logo-wrapper">
+        <a href="/">
+            <div id="logo">
+                <img class="rel" src="/static/RAMSES.png" alt="RAMSES Logo">
+            </div>
+        </a>
+    </div>
         <div id="menu" class="menu">
             <ul>
                 <li><a href="/">HOME</a></li>
-                <li><a href="/static/contact.html">CONTACT</a></li>
-                <li><a href="/static/about.html">ABOUT</a></li>
-                <li><a href="/static/options.html">OPTIONS</a></li>
+                <li><a href="/contact">CONTACT</a></li>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/options">OPTIONS</a></li>
             </ul>
         </div>
         <div style="position: absolute; left: 20%; top: 20%; width: 60%; margin: auto; text-align: left;">

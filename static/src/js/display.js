@@ -180,11 +180,11 @@ function tooltipCallback(tooltipItem){
             $("#raw").get(0).outerHTML;
             $('#raw').remove();
         } else{
-            $('#viewer-wrapper-wrapper').css('border','3px solid #f1f1f1');
+            $('#viewer-opt-container').css('border','3px solid #f1f1f1');
             $('#viewer-wrapper p').remove();
-            $('#sliders p').css('visibility','visible');
-            $('#gain').css('visibility','visible');
-            $('#raw-window').css('visibility','visible');
+            $('#sliders').css('visibility','visible');
+            // $('#gain').css('visibility','visible');
+            // $('#raw-window').css('visibility','visible');
         }
         $("#viewer-wrapper").append('<div id="loader" class="loader"></div>');
         $("#viewer-wrapper").css('cursor','wait');
@@ -246,7 +246,7 @@ function tooltipCallback(tooltipItem){
             var raw_times;
             console.log('data pulled');
             $("#loader").remove();
-            $('#viewer-wrapper').append('<canvas id="raw" style="height:455; width: 742; margin: auto; display: none;"></canvas>');
+            $('#viewer-wrapper').append('<canvas id="raw" style="margin: auto; display: none;"></canvas>');
             $("#viewer-wrapper").css('cursor','');
             $("#raw").show();
             raw_times=raw_data.times.map( function callback(val) { return moment(val,'YYYY-MM-DD hh:mm:ss.SSS') });
@@ -557,6 +557,11 @@ function createGraphs(dataset, dataset_n, dur){
                     suggestedMin: times[0],
                     suggestedMax: times[times.length-1],
                     distribution: "linear",
+                    ticks: {
+                        maxRotation: 0,
+                        autoSkip: true,
+                        autoSkipPadding: 3,
+                    }
                 }]
             },
             annotation: {

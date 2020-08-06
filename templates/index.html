@@ -4,9 +4,13 @@
         <meta charset="utf-8" />
         <link rel="shortcut icon" href="/static/favicon.png">
         <title>ICU EEG Monitoring Dashboard</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,800" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+        {% assets "main_css" %}
+        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+        {% endassets %}
         <style>
             #list {
                 overflow-y: scroll;
@@ -20,73 +24,157 @@
             var worst=JSON.parse('{{worst|safe}}');
             var orders=JSON.parse('{{orders|safe}}');
             var pct=JSON.parse('{{pct|safe}}');
+            var preds=JSON.parse('{{preds|safe}}');
+            var times= JSON.parse('{{times|safe}}');
             var filled=false;
 
-
-
+ 
             function fillList() {
-                var order=$("#sorting-select")[0].value;
+                var sorting_opt=$("#sorting-select")[0].value;
                 var win=$("#window-select")[0].value;
+                var num_beds=list.length;
+                var max_for_chart_prev=8;
 
                 if(filled){
                     $('#list').empty();
                 }
                 console.log(list);
                 var states=['safe','maybe','sz','artifact'];
-                orders[win][order].forEach((e,i)=>{
+
+                orders[win][sorting_opt].forEach((e)=>{createTag(e)});
+
+                if (num_beds<=max_for_chart_prev){
+                    for(let i=0;i<max_for_chart_prev-num_beds;i++){
+                        $('#list').append(`<div class="blank-item">&nbsp</div>`);
+                    }
+                }
+
+                function createTag(idx){
+                    var chart_tags= (num_beds<=max_for_chart_prev)? `<div style="position:absolute;height:70%; width:100%; bottom:0px;">` +
+                        `<canvas id="chart${idx}" style="height:200; width: 1530;"></canvas></div>` : ``;
+
                     $('#list').append(`<div class="grid-item">`+
-                    `<a href="/dashboard?name=${list[e]}" style="font-family: 'Open Sans', sans-serif; text-decoration:none; font-weight:800;">${list[e]} | ${list2[e]}</a>`+
-                    `<p>${sznums[win][e]} seizures    |    ${sztimes[win][e]} minutes ago   |  ${pct[win][e]}% concerning </p>`+ 
-                    `<div class="status ${states[worst[win][e]]}"></div></div>`);
-                });
+                    `<a href="/dashboard?name=${list[idx]}" style="font-family: 'Open Sans', sans-serif; text-decoration:none; font-weight:800;">${parseInt(list[idx].slice(5)-59).toString()} | ${list2[idx]}</a>`+
+                    `<p>${sznums[win][idx]} seizures    |    ${sztimes[win][idx]} minutes ago   |  ${pct[win][idx]}% concerning </p>`+ 
+                    `<div class="status ${states[worst[win][idx]]}"></div>`+ chart_tags +`</div>`);
+
+
+                    if(num_beds<max_for_chart_prev){createChart(idx);} 
+                    
+                }
+
+                function createChart(idx){
+                    var p = preds[win][idx].slice();
+                    var t = times[win][idx].slice();
+                    t= t.map(function callback(val) { return moment(val,'YYYY-MM-DD HH:mm:ss');});
+                    var chartColors = ['#0ec6e5','#ffde59','#ff5757','#000000']
+
+                    while(p[0]==4){
+                        p.shift()
+                        t.shift()
+                    }
+
+                    var dataset=[];
+                    for (let i=0; i<p.length;i++){
+                        dataset.push({
+                            backgroundColor: chartColors[p[i]],
+                            borderColor: chartColors[p[i]],
+                            pointRadius: 0,
+                            data: [ {x: t[i], y: 1}, {x:t[i+1], y:1} ],
+                        });
+                    }
+                    console.log(dataset);
+
+                    var ctx=$(`#chart${idx}`)[0].getContext('2d');
+                    chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {datasets: dataset},
+                        options: {
+                            legend: {display: false},
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    type: "linear", 
+                                    display: false, 
+                                    ticks: {
+                                        beginAtZero: true,
+                                        suggestedMax: 1
+                                    }
+                                }],
+                                xAxes: [{
+                                    type: "time",
+                                    suggestedMin: t[0],
+                                    suggestedMax: t[t.length-1],
+                                    distribution: "linear",
+                                    ticks: {
+                                        maxRotation: 0,
+                                        autoSkip: true,
+                                        autoSkipPadding: 3,
+                                    },
+                                }]
+                            },
+                        }
+                    });
+                }
+
                 filled=true;
             }
 
         </script>
     </head>
     <body onload="fillList(null)">
-        <div id="shadow" class="shadow"></div>
+        <!-- <div id="shadow" class="shadow"></div> -->
+        <div class="toggle-btn-wrapper">
         <div id="toggle-btn" class="toggle-btn" onClick="openMenu()">
             <span></span>
             <span></span>
             <span></span>
         </div>
+        </div>
         <script>
             function openMenu(){
                 console.log('a');
                 $("#menu")[0].classList.toggle('active');
-                $("#shadow")[0].classList.toggle('casting');
+                $("#logo-sorting span")[0].classList.toggle('hide');
+                $("#logo-sorting span")[1].classList.toggle('hide');
+                $("#sorting-select")[0].classList.toggle('hide');
+                $("#window-select")[0].classList.toggle('hide');
             }
         </script>
+        <div id="logo-wrapper">
+        <a href="/">
         <div id="logo">
-            <img id="logo1" src="../static/RAMSES.png" alt="RAMSES Logo">
-            <img id="logo2" src="../static/RAMSES2.png" alt="RAMSES Logo" style="z-index: 5; opacity: 0;">
+                <img class="rel" src="../static/RAMSES.png" alt="RAMSES Logo">
         </div>
+         </a>
         <div id="sorting">
-            <p>Sort By: 
-            <select id="sorting-select" style="width: 65%;" onchange="fillList()">
+            <span>Sort By: 
+            <select id="sorting-select" onchange="fillList()">
                 <option value="recent"> Recent </option>
                 <option value="density"> Density </option>
                 <option value="room"> Room </option>
             </select>
         </br>
-            </p>
-            <p>Window Size: 
-                <select id="window-select" style="width: 65%;" onchange="fillList()">
+            </span>
+            <span>Window Size: 
+                <select id="window-select"  onchange="fillList()">
                     <option value="h2"> 2 hours </option>
                     <option value="h4"> 4 hours </option>
                     <option value="h8"> 8 hours </option>
                     <option value="h12"> 12 hours </option>
                     <option value="h24"> 24 hours </option>
                 </select>
-                </p>
+                </span>
         </div> 
+        </div>
+        </div>
         <div id="menu" class="menu">
             <ul>
                 <li><a href="/">HOME</a></li>
-                <li><a href="/static/contact.html">CONTACT</a></li>
-                <li><a href="/static/about.html">ABOUT</a></li>
-                <li><a href="/static/options.html">OPTIONS</a></li>
+                <li><a href="/contact">CONTACT</a></li>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/options">OPTIONS</a></li>
             </ul>
         </div>
         <div id="list" class="grid-container">
